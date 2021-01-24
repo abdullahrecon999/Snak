@@ -110,6 +110,12 @@ function draw() {
   line(2,2,2,height);
   line(width,height,width,2);
   line(0,height,width,height);
+  noStroke();
+  fill(color(139, 245, 252,100));
+  circle(70,width/2,75);
+  circle(width-70,width/2,75);
+  circle(height/2,70,75);
+  circle(height/2,height-70,75);
   fill(color(255,0,0));
   textWidth(20);
   text("Score: "+snak.score,5,17);
@@ -148,13 +154,13 @@ if(counter%speed==0){
 }
   input();
   if(snak.x<=2 || snak.x>=width-4 || snak.y<=2 || snak.y>=height-4){
-    alert("DEAD bruh...");
+    //alert("DEAD bruh...");
     snak.restart();
     body.splice(0,body.length);
   }
   for(i=0;i<body.length;i++){
     if(snak.x===body[i].x && snak.y===body[i].y){
-      alert("DEAD bruh...");
+      //alert("DEAD bruh...");
       snak.restart();
       body.splice(0,body.length);
     }
@@ -189,25 +195,25 @@ function input(){
         if(keyIsDown(LEFT_ARROW) && keyIsDown(UP_ARROW)){
             return;
         }
-        if(keyIsDown(LEFT_ARROW) && snak.dir!='right'){
+        if((keyIsDown(LEFT_ARROW) || (distanc2(mouseX,mouseY,70,width/2)<=75 && mouseIsPressed)) && snak.dir!='right'){
             snak.dir='left';
             inp=false;
             offx=+13;
             offy=0;
         }
-        else if(keyIsDown(RIGHT_ARROW) && snak.dir!='left'){
+        else if((keyIsDown(RIGHT_ARROW) || (distanc2(mouseX,mouseY,width-70,width/2)<=75 && mouseIsPressed)) && snak.dir!='left'){
             snak.dir='right';
             inp=false;
             offx=-13;
             offy=0;
         }
-        else if(keyIsDown(UP_ARROW) && snak.dir!='down'){
+        else if((keyIsDown(UP_ARROW) || (distanc2(mouseX,mouseY,height/2,70)<=75 && mouseIsPressed))&& snak.dir!='down'){
             snak.dir='up';
             inp=false;
             offy=+13;
             offx=0;
         }
-        else if(keyIsDown(DOWN_ARROW) && snak.dir!='up'){
+        else if((keyIsDown(DOWN_ARROW) || (distanc2(mouseX,mouseY,height/2,height-70)<=75 && mouseIsPressed))&& snak.dir!='up'){
             snak.dir='down';
             inp=false;
             offx=0;
@@ -222,4 +228,8 @@ function distanc(ob1,ob2){
   let x2=ob2.x;
   let y2=ob2.y;
   return sqrt(((x2-x1)**2)+((y2-y1)**2));
+}
+
+function distanc2(x1,y1,x2,y2){
+    return sqrt(((x2-x1)**2)+((y2-y1)**2));
 }
