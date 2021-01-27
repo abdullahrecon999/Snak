@@ -26,10 +26,6 @@ function food(x,y){
 
 }
 
-function windowResized(){
-  resizeCanvas(windowWidth,windowHeight);
-}
-
 let boxes={
   x:0,
   y:0,
@@ -98,12 +94,16 @@ let dots=new Array();
 let snak=new snake(100,100);
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(windowWidth, windowHeight);
   for(i=0;i<10;i++){
     dots[i]=new food(0,0);
     dots[i].update();
   }
   //frameRate(10);
+}
+
+function windowResized(){
+  resizeCanvas(windowWidth,windowHeight);
 }
 
 function draw() {
