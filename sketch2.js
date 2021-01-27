@@ -26,6 +26,10 @@ function food(x,y){
 
 }
 
+function windowResized(){
+  resizeCanvas(windowWidth,windowHeight);
+}
+
 let boxes={
   x:0,
   y:0,
