@@ -2,8 +2,21 @@ let body=new Array();
 let counter=0;
 let offx=0,offy=0;
 let inp=false;
+let lda=true;
 let speed=10;
 let prev;
+//let bakCols=['grey','green','white'];
+var t=new Array;
+var c=0;
+
+function loading() {
+  c+=0.1;
+  background(255,255,255);
+  for(i=0;i<6;i++){
+    t[i].setSpeed(5+i,c*i*50);
+  }
+  drawSprites();
+}
 
 function food(x,y){
   this.x=x;
@@ -99,88 +112,96 @@ function setup() {
     dots[i]=new food(0,0);
     dots[i].update();
   }
+  for(i=0;i<6;i++){
+    t[i]=createSprite(200, 100, 10, 10);
+  }
   //frameRate(10);
 }
 
 function draw() {
-  stroke(0);
-  background(220);
-  strokeWeight(3);
-  line(2,2,width,2);
-  line(2,2,2,height);
-  line(width,height,width,2);
-  line(0,height,width,height);
-  noStroke();
-  fill(color(139, 245, 252,100));
-  circle(70,width/2,75);
-  circle(width-70,width/2,75);
-  circle(height/2,70,75);
-  circle(height/2,height-70,75);
-  fill(color(255,0,0));
-  textWidth(20);
-  text("Score: "+snak.score,5,17);
-  
-  let cnt=0;
-  for(d of dots){
-    d.draw();
-    if(!d.isVisible){cnt++;}
+  if(lda===true && c<18){
+    loading();
   }
-  if(cnt==4){
+  else{
+    stroke(0);
+    background(220);
+    strokeWeight(3);
+    line(2,2,width,2);
+    line(2,2,2,height);
+    line(width,height,width,2);
+    line(0,height,width,height);
+    noStroke();
+    fill(color(139, 245, 252,100));
+    circle(70,width/2,75);
+    circle(width-70,width/2,75);
+    circle(height/2,70,75);
+    circle(height/2,height-70,75);
+    fill(color(255,0,0));
+    textWidth(20);
+    text("Score: "+snak.score,5,17);
+    
+    let cnt=0;
     for(d of dots){
-      d.update();
+      d.draw();
+      if(!d.isVisible){cnt++;}
     }
-  }
+    if(cnt==4){
+      for(d of dots){
+        d.update();
+      }
+    }
 
-if(counter%speed==0){
+  if(counter%speed==0){
 
-  snak.move();
-  inp=true;
-  //snak.draw();
-  snak.eat();
+    snak.move();
+    inp=true;
+    //snak.draw();
+    snak.eat();
 
-  if(snak.score>0){
-    body.reverse();
-    let copy = Object.assign({}, boxes);
-    copy.x=snak.x+offx;
-    copy.y=snak.y+offy;
-    body.push(copy);
-    body.reverse();
+    if(snak.score>0){
+      body.reverse();
+      let copy = Object.assign({}, boxes);
+      copy.x=snak.x+offx;
+      copy.y=snak.y+offy;
+      body.push(copy);
+      body.reverse();
+    }
+    
+    if(body.length>snak.score){
+        body.pop();
+    }
+    //input();
   }
-  
-  if(body.length>snak.score){
-      body.pop();
-  }
-  //input();
-}
-  input();
-  if(snak.x<=2 || snak.x>=width-4 || snak.y<=2 || snak.y>=height-4){
-    //alert("DEAD bruh...");
-    snak.restart();
-    body.splice(0,body.length);
-  }
-  for(i=0;i<body.length;i++){
-    if(snak.x===body[i].x && snak.y===body[i].y){
+    input();
+    if(snak.x<=2 || snak.x>=width-4 || snak.y<=2 || snak.y>=height-4){
       //alert("DEAD bruh...");
       snak.restart();
       body.splice(0,body.length);
     }
-  }
-  snak.draw();
-  noStroke();
-  drawQueue();
-  counter++;
+    for(i=0;i<body.length;i++){
+      if(snak.x===body[i].x && snak.y===body[i].y){
+        //alert("DEAD bruh...");
+        snak.restart();
+        body.splice(0,body.length);
+      }
+    }
+    snak.draw();
+    noStroke();
+    drawQueue();
+    counter++;
 
-  if(snak.score===0){
-      speed=10;
-  }
-  if((speed-1)<1){
-      speed=speed+1;
-  }
-  else if((snak.score+1)%11==0 && snak.score!=prev){
-      speed-=1;
-  }
-  if((snak.score+1)%11==0){
-    prev=snak.score;
+    if(snak.score===0){
+        speed=10;
+    }
+    if((speed-1)<1){
+        speed=speed+1;
+    }
+    else if((snak.score+1)%11==0 && snak.score!=prev){
+        speed-=1;
+    }
+    if((snak.score+1)%11==0){
+      prev=snak.score;
+    }
   }
 }
 
